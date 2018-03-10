@@ -26,18 +26,25 @@ android {
     configurations.all {
         resolutionStrategy.force "com.google.code.findbugs:jsr305:$jsr305"
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'IP_ADDRESS', IP_ADDRESS
+    }
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
         }
     }
     productFlavors {
         free {
-            applicationId 'com.hap.jokes.free'
+            applicationIdSuffix '.free'
         }
         paid {
-            applicationId 'com.hap.jokes.paid'
+            applicationIdSuffix '.paid'
         }
     }
 }
@@ -67,5 +74,3 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
-
-//apply plugin: 'com.google.gms.google-services'

@@ -1,7 +1,7 @@
 package com.hap.backend;
 
 /** The object model for the data we are sending through endpoints */
-public class MyBean {
+public class MyJoke {
 
     private String myData;
 

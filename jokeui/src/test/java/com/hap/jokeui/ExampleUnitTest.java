@@ -1,4 +1,4 @@
-package hap.com.jokes;
+package com.hap.jokeui;
 
 import org.junit.Test;
 

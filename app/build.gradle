@@ -1,14 +1,29 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.google.cloud.tools:endpoints-framework-gradle-plugin:$endpointsFrameworkGradle"
+    }
+}
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion Integer.parseInt("$compileSdk")
+    buildToolsVersion "$buildTools"
     defaultConfig {
-        applicationId "hap.com.jokes"
-        minSdkVersion 15
-        targetSdkVersion 26
+        applicationId 'com.hap.jokes'
+        minSdkVersion Integer.parseInt("$minSdk")
+        targetSdkVersion Integer.parseInt("$targetSdk")
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    configurations.all {
+        resolutionStrategy.force "com.google.code.findbugs:jsr305:$jsr305"
     }
     buildTypes {
         release {
@@ -16,13 +31,35 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "com.android.support:appcompat-v7:$appCompat"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
+    implementation "com.google.android.gms:play-services-ads:$playServicesAds"
+
+    implementation "com.google.android.gms:play-services-ads:$playServicesAds"
+    implementation "com.google.api-client:google-api-client:$googleApiClient"
+    implementation "com.google.http-client:google-http-client-android:$googleApiClient"
+
+    implementation "com.google.code.findbugs:jsr305:$jsr305"
+
+    // modules
+    implementation project(':jokeui')
+
+    // V2: Endpoints Framework v2 migration
+    endpointsServer project(path: ':backend', configuration: 'endpoints')
+
+    // test
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "com.android.support.test:runner:$runner"
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$espresso", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
+
+apply plugin: 'com.google.gms.google-services'

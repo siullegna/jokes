@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">jokeui</string>
+    <string name="error">There was a problem joking with you! xD!</string>
 </resources>

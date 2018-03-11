@@ -3,8 +3,7 @@ package com.hap.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-
-import javax.inject.Named;
+import com.hap.jokes_provider.JokesGenerator;
 
 /**
  * An endpoint class we are exposing
@@ -19,18 +18,13 @@ import javax.inject.Named;
         )
 )
 public class JokesApi {
-    public static String someJoke() {
-        return "this is a java joke";
-    }
-
     /**
      * A simple endpoint method that takes a name and says Hi back
      */
-    @ApiMethod(name = "sayHi")
-    public MyBean sayHi(@Named("name") String name) {
-        MyBean response = new MyBean();
-        response.setData("Hi, " + name + "!");
-
+    @ApiMethod(name = "tellAJoke")
+    public MyJoke tellAJoke() {
+        final MyJoke response = new MyJoke();
+        response.setData(JokesGenerator.getJoke().toString());
         return response;
     }
 }

@@ -11,6 +11,7 @@ buildscript {
 }
 
 android {
+    flavorDimensions "default"
     compileSdkVersion Integer.parseInt("$compileSdk")
     buildToolsVersion "$buildTools"
     defaultConfig {
@@ -25,13 +26,26 @@ android {
     configurations.all {
         resolutionStrategy.force "com.google.code.findbugs:jsr305:$jsr305"
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'IP_ADDRESS', IP_ADDRESS
+    }
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
         }
     }
     productFlavors {
+        free {
+            applicationIdSuffix '.free'
+        }
+        paid {
+            applicationIdSuffix '.paid'
+        }
     }
 }
 
@@ -40,7 +54,6 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:$appCompat"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
-    implementation "com.google.android.gms:play-services-ads:$playServicesAds"
 
     implementation "com.google.android.gms:play-services-ads:$playServicesAds"
     implementation "com.google.api-client:google-api-client:$googleApiClient"
@@ -61,5 +74,3 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
-
-apply plugin: 'com.google.gms.google-services'

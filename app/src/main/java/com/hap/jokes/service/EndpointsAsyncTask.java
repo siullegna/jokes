@@ -1,10 +1,7 @@
 package com.hap.jokes.service;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.Pair;
-import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -20,12 +17,16 @@ import static com.hap.jokes.util.JokeSettings.getJokeUrl;
  * Created by luis on 3/3/18.
  */
 
-public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
-    private Context context;
+    private final OnTaskCompleteListener onTaskCompleteListener;
+
+    public EndpointsAsyncTask(OnTaskCompleteListener onTaskCompleteListener) {
+        this.onTaskCompleteListener = onTaskCompleteListener;
+    }
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected String doInBackground(Void... params) {
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -44,11 +45,8 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
-
         try {
-            return myApiService.sayHi(name).execute().getData();
+            return myApiService.tellAJoke().execute().getData();
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -56,8 +54,13 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
         Log.e("", result);
+        if (onTaskCompleteListener != null) {
+            onTaskCompleteListener.onComplete(result);
+        }
     }
 
+    public interface OnTaskCompleteListener {
+        void onComplete(final String result);
+    }
 }

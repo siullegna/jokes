@@ -3,8 +3,12 @@ package com.hap.jokes_provider;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class JokesGenerator {
+public final class JokesGenerator {
     private static ArrayList<Joke> jokes = null;
+
+    private JokesGenerator() {
+
+    }
 
     private static ArrayList<Joke> getJokes() {
         if (jokes == null) {

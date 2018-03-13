@@ -55,7 +55,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$appCompat"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayout"
 
-    implementation "com.google.android.gms:play-services-ads:$playServicesAds"
+    freeCompile "com.google.android.gms:play-services-ads:$playServicesAds"
     implementation "com.google.api-client:google-api-client:$googleApiClient"
     implementation "com.google.http-client:google-http-client-android:$googleApiClient"
 

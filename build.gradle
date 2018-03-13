@@ -25,3 +25,11 @@ task clean(type: Delete) {
 }
 
 apply from: 'gradle/libversion.gradle'
+
+task testAll {
+    dependsOn ":backend:appengineStart", ":app:connectedAndroidTest"
+    doLast {
+        println "3 - appengineStop."
+        ":backend:appengineStop"
+    }
+}

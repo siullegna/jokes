@@ -1,10 +1,11 @@
-package com.hap.jokes;
+package com.hap.jokes.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.hap.jokes.R;
 import com.hap.jokes.free.Config;
 import com.hap.jokes.service.EndpointsAsyncTask;
 import com.hap.jokeui.JokeActivity;
